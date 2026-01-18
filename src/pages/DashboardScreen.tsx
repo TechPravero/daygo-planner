@@ -79,37 +79,28 @@ const DashboardScreen: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Quick Actions */}
+        {/* Quick Action */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-2 gap-4 mb-8"
+          className="mb-8"
         >
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => navigate('/explore')}
-            className="bg-card rounded-2xl p-5 text-left border border-border shadow-soft hover:shadow-medium transition-shadow"
-          >
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-              <Compass className="w-6 h-6 text-primary" />
-            </div>
-            <h3 className="font-semibold font-heading text-foreground">Explore City</h3>
-            <p className="text-sm text-muted-foreground mt-1">Browse popular spots</p>
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/custom-plan')}
-            className="bg-card rounded-2xl p-5 text-left border border-border shadow-soft hover:shadow-medium transition-shadow"
+            className="w-full bg-card rounded-2xl p-5 text-left border border-border shadow-soft hover:shadow-medium transition-shadow"
           >
-            <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mb-3">
-              <Sparkles className="w-6 h-6 text-gold" />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-gold" />
+              </div>
+              <div>
+                <h3 className="font-semibold font-heading text-foreground">Custom Plan</h3>
+                <p className="text-sm text-muted-foreground mt-1">Craft your perfect day</p>
+              </div>
             </div>
-            <h3 className="font-semibold font-heading text-foreground">Custom Plan</h3>
-            <p className="text-sm text-muted-foreground mt-1">Craft your perfect day</p>
           </motion.button>
         </motion.div>
 

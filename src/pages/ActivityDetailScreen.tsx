@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useApp } from '@/contexts/AppContext';
 import MobileLayout from '@/components/layout/MobileLayout';
+import LocationWeatherCard from '@/components/activity/LocationWeatherCard';
 
 // Mock images for activities
 const activityImages: Record<string, string> = {
@@ -128,12 +129,19 @@ const ActivityDetailScreen: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* Location & Weather */}
+        <LocationWeatherCard
+          activityLat={coordinates.lat}
+          activityLng={coordinates.lng}
+          activityName={activity.name}
+        />
+
         {/* Map & Directions */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="px-5 py-4"
+          className="px-5 py-2"
         >
           <div className="bg-card rounded-2xl border border-border shadow-soft overflow-hidden">
             {/* Map Preview */}

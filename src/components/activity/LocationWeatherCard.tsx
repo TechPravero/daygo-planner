@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Navigation2, Thermometer, Droplets, Wind, Loader2, AlertCircle } from 'lucide-react';
-import { useGeolocation, calculateDistance, formatDistance } from '@/hooks/useGeolocation';
+import { MapPin, Navigation2, Thermometer, Droplets, Wind, Loader2, AlertCircle, Clock } from 'lucide-react';
+import { useGeolocation, calculateDistance, formatDistance, estimateTravelTime, formatTravelTime } from '@/hooks/useGeolocation';
 import { useWeather } from '@/hooks/useWeather';
+import { useApp } from '@/contexts/AppContext';
 
 interface LocationWeatherCardProps {
   activityLat: number;
@@ -17,9 +18,14 @@ const LocationWeatherCard: React.FC<LocationWeatherCardProps> = ({
 }) => {
   const { latitude, longitude, error: locationError, loading: locationLoading } = useGeolocation();
   const { weather, loading: weatherLoading, error: weatherError } = useWeather(activityLat, activityLng);
+  const { preferences } = useApp();
 
   const distance = latitude && longitude
     ? calculateDistance(latitude, longitude, activityLat, activityLng)
+    : null;
+
+  const travelTime = distance !== null
+    ? estimateTravelTime(distance, preferences.travelMode)
     : null;
 
   return (
@@ -31,7 +37,7 @@ const LocationWeatherCard: React.FC<LocationWeatherCardProps> = ({
     >
       <div className="bg-card rounded-2xl border border-border shadow-soft overflow-hidden">
         <div className="grid grid-cols-2 divide-x divide-border">
-          {/* Location Section */}
+          {/* Location & Travel Time Section */}
           <div className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -50,7 +56,7 @@ const LocationWeatherCard: React.FC<LocationWeatherCardProps> = ({
                 <AlertCircle className="w-4 h-4" />
                 <span className="text-xs">{locationError}</span>
               </div>
-            ) : distance !== null ? (
+            ) : distance !== null && travelTime !== null ? (
               <div className="space-y-2">
                 <div className="flex items-baseline gap-1">
                   <span className="text-2xl font-bold text-foreground">{formatDistance(distance)}</span>
@@ -59,6 +65,13 @@ const LocationWeatherCard: React.FC<LocationWeatherCardProps> = ({
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
                   <MapPin className="w-3 h-3" />
                   <span>from {activityName}</span>
+                </div>
+                <div className="pt-2 mt-2 border-t border-border">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-semibold text-foreground">{formatTravelTime(travelTime)}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground ml-6">via {preferences.travelMode}</span>
                 </div>
               </div>
             ) : (

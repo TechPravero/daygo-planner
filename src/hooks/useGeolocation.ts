@@ -110,3 +110,35 @@ export const formatDistance = (distanceKm: number): string => {
   }
   return `${distanceKm.toFixed(1)} km`;
 };
+
+// Average speeds in km/h for different travel modes
+const travelSpeeds: Record<string, number> = {
+  'Walk': 5,
+  'Cab': 25,
+  'Walk + Cab': 20,
+  'Bike': 15,
+  'Metro': 35,
+  'Auto': 20,
+};
+
+// Estimate travel time based on distance and travel mode
+export const estimateTravelTime = (distanceKm: number, travelMode: string): number => {
+  const speed = travelSpeeds[travelMode] || travelSpeeds['Walk + Cab'];
+  return (distanceKm / speed) * 60; // Returns time in minutes
+};
+
+// Format travel time for display
+export const formatTravelTime = (minutes: number): string => {
+  if (minutes < 1) {
+    return '< 1 min';
+  }
+  if (minutes < 60) {
+    return `${Math.round(minutes)} min`;
+  }
+  const hours = Math.floor(minutes / 60);
+  const remainingMins = Math.round(minutes % 60);
+  if (remainingMins === 0) {
+    return `${hours} hr`;
+  }
+  return `${hours} hr ${remainingMins} min`;
+};
